@@ -1,0 +1,37 @@
+services:
+  yay-or-nay:
+    container_name: yay-or-nay
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_URL=postgres://postgres:postgres@postgres:5432/yay_or_nay
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: yay-or-nay:latest
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  postgres:
+    container_name: yay-or-nay-postgres
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "yay_or_nay"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: postgres:16
+    ports:
+      - 5432
+    restart: unless-stopped
+    volumes:
+      - yay-or-nay-data:/var/lib/postgresql/data
+
+volumes:
+  yay-or-nay-data: {}
