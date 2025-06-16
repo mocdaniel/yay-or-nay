@@ -6,7 +6,7 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  bake:
+  build-image:
     runs-on: ubuntu-latest
     steps:
       - name: Docker Metadata
@@ -20,7 +20,6 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}  # 1.2
             type=semver,pattern={{major}}            # 1
             type=raw,value=latest                    # latest
-            
 
       - name: Checkout repository
         uses: actions/checkout@v4
