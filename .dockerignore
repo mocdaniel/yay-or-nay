@@ -1,0 +1,10 @@
+# Directories
+.github/
+.next/
+node_modules/
+
+# Files
+.env
+.gitignore
+compose.yaml
+README.md
