@@ -27,8 +27,6 @@ services:
       timeout: 5s
       retries: 5
     image: postgres:16
-    ports:
-      - 5432
     restart: unless-stopped
     volumes:
       - yay-or-nay-data:/var/lib/postgresql/data

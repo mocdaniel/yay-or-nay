@@ -1,33 +1,36 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getCurrentSession } from "@/lib/session";
 import { redirect } from "next/navigation";
-import { SignupForm } from "@/app/signup/components";
-import getDb from "@/lib/db";
+import  SignupForm  from "./components";
 
 export default async function Page() {
-  // This is needed for the build to succeed, as this is the only ungated
-  // database access that _would_ happen at build time.
-  try {
-    const db = await getDb();
+  const { session } = await getCurrentSession();
 
-    let rows = null;
-
-    rows = await db`
-    SELECT * FROM users
-  `;
-
-    if (rows?.length > 0) {
-      redirect("/login");
-    }
-
-    return (
-      <div>
-        <SignupForm />
-      </div>
-    );
-  } catch (error) {
-    return (
-      <div>
-        <h1>Database not reachable.</h1>
-      </div>
-    );
+  if (session !== null) {
+    return redirect("/dashboard");
   }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">
+            Sign In
+          </CardTitle>
+          <CardDescription className="text-center">
+            Enter your credentials to register
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <SignupForm />
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

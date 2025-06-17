@@ -10,8 +10,15 @@ type UserCredentials = {
 export async function createUser(
   username: string,
   password: string
-): Promise<User> {
+): Promise<User | null> {
   const db = await getDb();
+  const users = await db`
+    SELECT * FROM users;
+  `
+
+  if(users.length > 0) {
+    return null
+  }
   const passwordHash = await hashPassword(password);
   const [row] = await db`
     INSERT INTO users

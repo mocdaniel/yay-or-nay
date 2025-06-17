@@ -1,9 +1,9 @@
 import z from "zod";
 
-const SPECIAL_CHAR = (value: string) =>
+export const SPECIAL_CHAR = (value: string) =>
   /[-._!"`'#%&,:;<>=@{}~\$\(\)\*\+\/\\\?\[\]\^\|]+/.test(value);
-const LOWERCASE = (value: string) => /[a-z]/.test(value);
-const UPPERCASE = (value: string) => /[A-Z]/.test(value);
+export const LOWERCASE = (value: string) => /[a-z]/.test(value);
+export const UPPERCASE = (value: string) => /[A-Z]/.test(value);
 
 export const credentialsSchema = z.object({
   username: z.string().min(4).max(32),
@@ -52,6 +52,11 @@ const feedbackFormPartial = {
   comment: z.string().min(4).max(1028).optional().or(z.string().length(0)),
   mayPublish: z.boolean(),
 };
+
+export const loginSchema = z.object({
+  username: z.string(),
+  password: z.string(),
+});
 
 export const talkFeedbackSchema = z.object({
   presentation: z.string().regex(/^[1-5]$/, "Rating must be between 1 and 5"),

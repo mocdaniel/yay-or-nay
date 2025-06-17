@@ -14,20 +14,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { credentialsSchema } from "@/lib/zod-schemas";
+import { loginSchema } from "@/lib/zod-schemas";
 import { loginAction } from "@/app/login/actions";
 import { useActionState } from "react";
 
 export default function LoginForm() {
-  const form = useForm<z.infer<typeof credentialsSchema>>({
-    resolver: zodResolver(credentialsSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  const [_state, formAction, isPending] = useActionState(loginAction, {});
+  const [state, formAction, isPending] = useActionState(loginAction, {});
 
   return (
     <Form {...form}>
@@ -66,7 +66,12 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" disabled={isPending}>
+        {state.error && <div className="text-destructive">{state.error}</div>}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isPending || !form.formState.isValid}
+        >
           Sign In
         </Button>
       </form>

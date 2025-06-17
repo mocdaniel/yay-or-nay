@@ -18,7 +18,7 @@ You can find more information on Yay Or Nay, it's use-cases, and constraints,
 ## Public Demo
 
 There is a demo publicly available at [yay-or-nay.vercel.app](https://yay-or-nay.vercel.app), below are credentials
-to login:
+to log in:
 
 | Credential | Value    |
 | ---------- | -------- |

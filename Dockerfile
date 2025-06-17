@@ -7,8 +7,6 @@ COPY bun.lock package.json ./
 
 RUN bun install --frozen-lockfile
 
-ENV IS_BUILD=1
-
 COPY components.json middleware.ts next.config.ts postcss.config.mjs tsconfig.json ./
 
 COPY src/ src/
@@ -24,6 +22,6 @@ EXPOSE 3000
 
 COPY --from=builder /app/.next/standalone .
 COPY --from=builder /app/.next/static ./.next/static
-COPY migrations.sql .
+COPY migrations.sql package.json bun.lock ./
 
 CMD ["bun", "server.js"]

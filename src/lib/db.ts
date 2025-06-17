@@ -7,7 +7,7 @@ declare global {
 export default async function getDb(): Promise<SQL> {
   if (globalThis.__db) return globalThis.__db;
 
-  if (process.env.POSTGRES_URL === undefined && process.env.IS_BUILD !== "1") {
+  if (process.env.POSTGRES_URL === undefined) {
     console.error("POSTGRES_URL environment variable is not set.");
     process.exit(1);
   }

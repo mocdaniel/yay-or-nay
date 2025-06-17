@@ -2,7 +2,7 @@
 
 import { getUserFromUsername, verifyHash } from "@/lib/auth";
 import { createSession, generateSessionToken } from "@/lib/session";
-import { credentialsSchema } from "@/lib/zod-schemas";
+import { loginSchema } from "@/lib/zod-schemas";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -14,9 +14,7 @@ export async function loginAction(
   _prev: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const validatedFormData = credentialsSchema.safeParse(
-    Object.fromEntries(formData)
-  );
+  const validatedFormData = loginSchema.safeParse(Object.fromEntries(formData));
 
   if (!validatedFormData.success) {
     return {
@@ -28,7 +26,7 @@ export async function loginAction(
 
   if (!user) {
     return {
-      error: "Wrong username or password",
+      error: "Wrong username or password.",
     };
   }
 
@@ -39,7 +37,7 @@ export async function loginAction(
 
   if (!isValidPassword) {
     return {
-      error: "Wrong username or password",
+      error: "Wrong username or password.",
     };
   }
 

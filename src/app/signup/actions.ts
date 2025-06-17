@@ -22,10 +22,16 @@ export async function signupAction(
     return { message: validatedFormData.error.message };
   }
 
+
+
   const user = await createUser(
     validatedFormData.data.username,
     validatedFormData.data.password
   );
+
+  if(!user) {
+    return {message: "Admin user already exists. Please log in as this user."}
+  }
 
   // Create session and set cookie
   const sessionToken = generateSessionToken();
