@@ -1,7 +1,9 @@
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { submitFeedbackAction } from '@/app/feedback/[slug]/actions'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -10,118 +12,107 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import type { Form as FormSchema } from "@/lib/types/database.types";
-import {
-  panelFeedbackSchema,
-  talkFeedbackSchema,
-  workshopFeedbackSchema,
-} from "@/lib/zod-schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Calendar } from "lucide-react";
-import { useActionState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { submitFeedbackAction } from "@/app/feedback/[slug]/actions";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Textarea } from '@/components/ui/textarea'
+import type { Form as FormSchema } from '@/lib/types/database.types'
+import { panelFeedbackSchema, talkFeedbackSchema, workshopFeedbackSchema } from '@/lib/zod-schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Calendar } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useActionState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 const generalFeedbackQuestions = [
   {
-    label: "How would you rate the overall topic?",
-    description: "Was it relevant to you? Did it fit the occasion?",
-    name: "topic",
+    label: 'How would you rate the overall topic?',
+    description: 'Was it relevant to you? Did it fit the occasion?',
+    name: 'topic',
   },
   {
     label: "How would you rate the presenter's expertise?",
-    description: "Did they seem knowledgeable? Did they seem prepared?",
-    name: "expertise",
+    description: 'Did they seem knowledgeable? Did they seem prepared?',
+    name: 'expertise',
   },
-];
+]
 
 const talkFeedbackQuestions = [
   {
-    label: "How would you rate the presentation?",
-    description: "Was it engaging? What about the pacing?",
-    name: "presentation",
+    label: 'How would you rate the presentation?',
+    description: 'Was it engaging? What about the pacing?',
+    name: 'presentation',
   },
   {
-    label: "How would you rate the slides?",
-    description: "Were they clear? Convoluted? Did they add value?",
-    name: "slides",
+    label: 'How would you rate the slides?',
+    description: 'Were they clear? Convoluted? Did they add value?',
+    name: 'slides',
   },
-];
+]
 
 const workshopFeedbackQuestions = [
   {
-    label: "How would you rate the workshop materials?",
-    description:
-      "Did they provide enough information? Were they easy to follow?",
-    name: "materials",
+    label: 'How would you rate the workshop materials?',
+    description: 'Did they provide enough information? Were they easy to follow?',
+    name: 'materials',
   },
   {
-    label: "How would you rate the interactive parts of the workshop?",
-    description: "Were they engaging? Were they too easy or too hard?",
-    name: "interaction",
+    label: 'How would you rate the interactive parts of the workshop?',
+    description: 'Were they engaging? Were they too easy or too hard?',
+    name: 'interaction',
   },
-];
+]
 
 const panelFeedbackQuestions = [
   {
-    label: "How would you rate the overall discussion?",
-    description: "Were speaking times balanced? Did the panel stay on topic?",
-    name: "discussion",
+    label: 'How would you rate the overall discussion?',
+    description: 'Were speaking times balanced? Did the panel stay on topic?',
+    name: 'discussion',
   },
   {
     label: "How would you rate the panel's participants?",
-    description:
-      "Did they present a diverse background? Did the discussion feel fair/balanced?",
-    name: "panelists",
+    description: 'Did they present a diverse background? Did the discussion feel fair/balanced?',
+    name: 'panelists',
   },
-];
+]
 
 function PanelForm({
   formId,
   formType,
 }: {
-  formId: number;
-  formType: "talk" | "workshop" | "panel";
+  formId: number
+  formType: 'talk' | 'workshop' | 'panel'
 }) {
   const [state, formAction, isPending] = useActionState(submitFeedbackAction, {
     error: undefined,
-  });
+  })
 
   const form = useForm<z.infer<typeof panelFeedbackSchema>>({
     resolver: zodResolver(panelFeedbackSchema),
     defaultValues: {
       formId,
       formType,
-      username: "",
-      email: "",
+      username: '',
+      email: '',
       mayPublish: false,
     },
-  });
+  })
 
-  const router = useRouter();
+  const router = useRouter()
   useEffect(() => {
     if (state.success) {
-      toast.success("Feedback submission successful.");
-      router.push("/");
+      toast.success('Feedback submission successful.')
+      router.push('/')
     }
-  }, [router, state.success]);
+  }, [router, state.success])
 
-  const questions = [
-    ...generalFeedbackQuestions,
-    ...panelFeedbackQuestions,
-  ] as Array<{
-    label: string;
-    description: string;
-    name: "topic" | "panelists" | "expertise" | "discussion";
-  }>;
+  const questions = [...generalFeedbackQuestions, ...panelFeedbackQuestions] as Array<{
+    label: string
+    description: string
+    name: 'topic' | 'panelists' | 'expertise' | 'discussion'
+  }>
 
   return (
     <Form {...form}>
@@ -137,9 +128,7 @@ function PanelForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{question.label}</FormLabel>
-                  <FormDescription className="-mt-1">
-                    {question.description}
-                  </FormDescription>
+                  <FormDescription className="-mt-1">{question.description}</FormDescription>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -149,39 +138,32 @@ function PanelForm({
                     >
                       {[1, 2, 3, 4, 5].map((rating) => {
                         return (
-                          <FormItem
-                            key={rating}
-                            className="flex flex-col items-center w-16"
-                          >
+                          <FormItem key={rating} className="flex w-16 flex-col items-center">
                             <FormControl>
-                              <RadioGroupItem
-                                value={rating.toString()}
-                                className="sr-only"
-                              />
+                              <RadioGroupItem value={rating.toString()} className="sr-only" />
                             </FormControl>
                             <FormLabel
-                              className={`h-10 w-10 rounded-full flex items-center justify-center cursor-pointer ${
-                                (field.value?.toString() || "") ===
-                                rating.toString()
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-gray-100 hover:bg-gray-2000 text-gray-700"
+                              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full ${
+                                (field.value?.toString() || '') === rating.toString()
+                                  ? 'bg-blue-600 text-white'
+                                  : 'hover:bg-gray-2000 bg-gray-100 text-gray-700'
                               }`}
                             >
                               {rating}
                             </FormLabel>
-                            <FormDescription className="text-xs mt-1">
+                            <FormDescription className="mt-1 text-xs">
                               {rating === 1
-                                ? "Poor"
+                                ? 'Poor'
                                 : rating === 2
-                                ? "Fair"
-                                : rating === 3
-                                ? "Good"
-                                : rating === 4
-                                ? "Very Good"
-                                : "Excellent"}
+                                  ? 'Fair'
+                                  : rating === 3
+                                    ? 'Good'
+                                    : rating === 4
+                                      ? 'Very Good'
+                                      : 'Excellent'}
                             </FormDescription>
                           </FormItem>
-                        );
+                        )
                       })}
                     </RadioGroup>
                   </FormControl>
@@ -198,8 +180,7 @@ function PanelForm({
               <FormItem>
                 <FormLabel>Additional Comments/Questions</FormLabel>
                 <FormDescription className="-mt-1">
-                  If you have any additional comments or questions, please leave
-                  them here.
+                  If you have any additional comments or questions, please leave them here.
                 </FormDescription>
                 <FormControl>
                   <Textarea
@@ -213,7 +194,7 @@ function PanelForm({
             )}
           />
 
-          <div className="space-y-4 border-t pt-4 mt-4">
+          <div className="mt-4 space-y-4 border-t pt-4">
             <h3 className="text-lg font-medium">Optional Information</h3>
 
             <FormField
@@ -236,16 +217,11 @@ function PanelForm({
                 <FormItem>
                   <FormLabel>Your Email</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="email"
-                      placeholder="jane@example.com"
-                    />
+                    <Input {...field} type="email" placeholder="jane@example.com" />
                   </FormControl>
                   <FormDescription>
-                    Your email will only be used to contact you if requested,
-                    e.g. when asking a question. It will never be published or
-                    used for any other purpose.
+                    Your email will only be used to contact you if requested, e.g. when asking a
+                    question. It will never be published or used for any other purpose.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -265,8 +241,7 @@ function PanelForm({
                     />
                   </FormControl>
                   <FormLabel>
-                    I allow my feedback to be published anonymously in the
-                    future.
+                    I allow my feedback to be published anonymously in the future.
                   </FormLabel>
                 </FormItem>
               )}
@@ -275,54 +250,51 @@ function PanelForm({
         </div>
         <Button
           type="submit"
-          className="w-full mt-4 font-bold"
+          className="mt-4 w-full font-bold"
           disabled={isPending || !form.formState.isValid}
         >
           Submit Feedback
         </Button>
       </form>
     </Form>
-  );
+  )
 }
 
 function TalkForm({
   formId,
   formType,
 }: {
-  formId: number;
-  formType: "talk" | "workshop" | "panel";
+  formId: number
+  formType: 'talk' | 'workshop' | 'panel'
 }) {
   const [state, formAction, isPending] = useActionState(submitFeedbackAction, {
     error: undefined,
-  });
+  })
 
   const form = useForm<z.infer<typeof talkFeedbackSchema>>({
     resolver: zodResolver(talkFeedbackSchema),
     defaultValues: {
       formId,
       formType,
-      username: "",
-      email: "",
+      username: '',
+      email: '',
       mayPublish: false,
     },
-  });
+  })
 
-  const router = useRouter();
+  const router = useRouter()
   useEffect(() => {
     if (state.success) {
-      toast.success("Feedback submission successful.");
-      router.push("/");
+      toast.success('Feedback submission successful.')
+      router.push('/')
     }
-  }, [router, state.success]);
+  }, [router, state.success])
 
-  const questions = [
-    ...generalFeedbackQuestions,
-    ...talkFeedbackQuestions,
-  ] as Array<{
-    label: string;
-    description: string;
-    name: "topic" | "presentation" | "expertise" | "slides";
-  }>;
+  const questions = [...generalFeedbackQuestions, ...talkFeedbackQuestions] as Array<{
+    label: string
+    description: string
+    name: 'topic' | 'presentation' | 'expertise' | 'slides'
+  }>
 
   return (
     <Form {...form}>
@@ -338,9 +310,7 @@ function TalkForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{question.label}</FormLabel>
-                  <FormDescription className="-mt-1">
-                    {question.description}
-                  </FormDescription>
+                  <FormDescription className="-mt-1">{question.description}</FormDescription>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -350,39 +320,32 @@ function TalkForm({
                     >
                       {[1, 2, 3, 4, 5].map((rating) => {
                         return (
-                          <FormItem
-                            key={rating}
-                            className="flex flex-col items-center w-16"
-                          >
+                          <FormItem key={rating} className="flex w-16 flex-col items-center">
                             <FormControl>
-                              <RadioGroupItem
-                                value={rating.toString()}
-                                className="sr-only"
-                              />
+                              <RadioGroupItem value={rating.toString()} className="sr-only" />
                             </FormControl>
                             <FormLabel
-                              className={`h-10 w-10 rounded-full flex items-center justify-center cursor-pointer ${
-                                (field.value?.toString() || "") ===
-                                rating.toString()
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-gray-100 hover:bg-gray-2000 text-gray-700"
+                              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full ${
+                                (field.value?.toString() || '') === rating.toString()
+                                  ? 'bg-blue-600 text-white'
+                                  : 'hover:bg-gray-2000 bg-gray-100 text-gray-700'
                               }`}
                             >
                               {rating}
                             </FormLabel>
-                            <FormDescription className="text-xs mt-1">
+                            <FormDescription className="mt-1 text-xs">
                               {rating === 1
-                                ? "Poor"
+                                ? 'Poor'
                                 : rating === 2
-                                ? "Fair"
-                                : rating === 3
-                                ? "Good"
-                                : rating === 4
-                                ? "Very Good"
-                                : "Excellent"}
+                                  ? 'Fair'
+                                  : rating === 3
+                                    ? 'Good'
+                                    : rating === 4
+                                      ? 'Very Good'
+                                      : 'Excellent'}
                             </FormDescription>
                           </FormItem>
-                        );
+                        )
                       })}
                     </RadioGroup>
                   </FormControl>
@@ -399,8 +362,7 @@ function TalkForm({
               <FormItem>
                 <FormLabel>Additional Comments/Questions</FormLabel>
                 <FormDescription className="-mt-1">
-                  If you have any additional comments or questions, please leave
-                  them here.
+                  If you have any additional comments or questions, please leave them here.
                 </FormDescription>
                 <FormControl>
                   <Textarea
@@ -414,7 +376,7 @@ function TalkForm({
             )}
           />
 
-          <div className="space-y-4 border-t pt-4 mt-4">
+          <div className="mt-4 space-y-4 border-t pt-4">
             <h3 className="text-lg font-medium">Optional Information</h3>
 
             <FormField
@@ -437,16 +399,11 @@ function TalkForm({
                 <FormItem>
                   <FormLabel>Your Email</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="email"
-                      placeholder="jane@example.com"
-                    />
+                    <Input {...field} type="email" placeholder="jane@example.com" />
                   </FormControl>
                   <FormDescription>
-                    Your email will only be used to contact you if requested,
-                    e.g. when asking a question. It will never be published or
-                    used for any other purpose.
+                    Your email will only be used to contact you if requested, e.g. when asking a
+                    question. It will never be published or used for any other purpose.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -466,8 +423,7 @@ function TalkForm({
                     />
                   </FormControl>
                   <FormLabel>
-                    I allow my feedback to be published anonymously in the
-                    future.
+                    I allow my feedback to be published anonymously in the future.
                   </FormLabel>
                 </FormItem>
               )}
@@ -476,54 +432,51 @@ function TalkForm({
         </div>
         <Button
           type="submit"
-          className="w-full mt-4 font-bold"
+          className="mt-4 w-full font-bold"
           disabled={isPending || !form.formState.isValid}
         >
           Submit Feedback
         </Button>
       </form>
     </Form>
-  );
+  )
 }
 
 function WorkshopForm({
   formId,
   formType,
 }: {
-  formId: number;
-  formType: "talk" | "workshop" | "panel";
+  formId: number
+  formType: 'talk' | 'workshop' | 'panel'
 }) {
   const [state, formAction, isPending] = useActionState(submitFeedbackAction, {
     error: undefined,
-  });
+  })
 
   const form = useForm<z.infer<typeof workshopFeedbackSchema>>({
     resolver: zodResolver(workshopFeedbackSchema),
     defaultValues: {
       formId,
       formType,
-      username: "",
-      email: "",
+      username: '',
+      email: '',
       mayPublish: false,
     },
-  });
+  })
 
-  const router = useRouter();
+  const router = useRouter()
   useEffect(() => {
     if (state.success) {
-      toast.success("Feedback submission successful.");
-      router.push("/");
+      toast.success('Feedback submission successful.')
+      router.push('/')
     }
-  }, [router, state.success]);
+  }, [router, state.success])
 
-  const questions = [
-    ...generalFeedbackQuestions,
-    ...workshopFeedbackQuestions,
-  ] as Array<{
-    label: string;
-    description: string;
-    name: "topic" | "materials" | "expertise" | "interaction";
-  }>;
+  const questions = [...generalFeedbackQuestions, ...workshopFeedbackQuestions] as Array<{
+    label: string
+    description: string
+    name: 'topic' | 'materials' | 'expertise' | 'interaction'
+  }>
 
   return (
     <Form {...form}>
@@ -539,9 +492,7 @@ function WorkshopForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{question.label}</FormLabel>
-                  <FormDescription className="-mt-1">
-                    {question.description}
-                  </FormDescription>
+                  <FormDescription className="-mt-1">{question.description}</FormDescription>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -551,39 +502,32 @@ function WorkshopForm({
                     >
                       {[1, 2, 3, 4, 5].map((rating) => {
                         return (
-                          <FormItem
-                            key={rating}
-                            className="flex flex-col items-center w-16"
-                          >
+                          <FormItem key={rating} className="flex w-16 flex-col items-center">
                             <FormControl>
-                              <RadioGroupItem
-                                value={rating.toString()}
-                                className="sr-only"
-                              />
+                              <RadioGroupItem value={rating.toString()} className="sr-only" />
                             </FormControl>
                             <FormLabel
-                              className={`h-10 w-10 rounded-full flex items-center justify-center cursor-pointer ${
-                                (field.value?.toString() || "") ===
-                                rating.toString()
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-gray-100 hover:bg-gray-2000 text-gray-700"
+                              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full ${
+                                (field.value?.toString() || '') === rating.toString()
+                                  ? 'bg-blue-600 text-white'
+                                  : 'hover:bg-gray-2000 bg-gray-100 text-gray-700'
                               }`}
                             >
                               {rating}
                             </FormLabel>
-                            <FormDescription className="text-xs mt-1">
+                            <FormDescription className="mt-1 text-xs">
                               {rating === 1
-                                ? "Poor"
+                                ? 'Poor'
                                 : rating === 2
-                                ? "Fair"
-                                : rating === 3
-                                ? "Good"
-                                : rating === 4
-                                ? "Very Good"
-                                : "Excellent"}
+                                  ? 'Fair'
+                                  : rating === 3
+                                    ? 'Good'
+                                    : rating === 4
+                                      ? 'Very Good'
+                                      : 'Excellent'}
                             </FormDescription>
                           </FormItem>
-                        );
+                        )
                       })}
                     </RadioGroup>
                   </FormControl>
@@ -600,8 +544,7 @@ function WorkshopForm({
               <FormItem>
                 <FormLabel>Additional Comments/Questions</FormLabel>
                 <FormDescription className="-mt-1">
-                  If you have any additional comments or questions, please leave
-                  them here.
+                  If you have any additional comments or questions, please leave them here.
                 </FormDescription>
                 <FormControl>
                   <Textarea
@@ -615,7 +558,7 @@ function WorkshopForm({
             )}
           />
 
-          <div className="space-y-4 border-t pt-4 mt-4">
+          <div className="mt-4 space-y-4 border-t pt-4">
             <h3 className="text-lg font-medium">Optional Information</h3>
 
             <FormField
@@ -638,16 +581,11 @@ function WorkshopForm({
                 <FormItem>
                   <FormLabel>Your Email</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="email"
-                      placeholder="jane@example.com"
-                    />
+                    <Input {...field} type="email" placeholder="jane@example.com" />
                   </FormControl>
                   <FormDescription>
-                    Your email will only be used to contact you if requested,
-                    e.g. when asking a question. It will never be published or
-                    used for any other purpose.
+                    Your email will only be used to contact you if requested, e.g. when asking a
+                    question. It will never be published or used for any other purpose.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -667,8 +605,7 @@ function WorkshopForm({
                     />
                   </FormControl>
                   <FormLabel>
-                    I allow my feedback to be published anonymously in the
-                    future.
+                    I allow my feedback to be published anonymously in the future.
                   </FormLabel>
                 </FormItem>
               )}
@@ -677,23 +614,23 @@ function WorkshopForm({
         </div>
         <Button
           type="submit"
-          className="w-full mt-4 font-bold"
+          className="mt-4 w-full font-bold"
           disabled={isPending || !form.formState.isValid}
         >
           Submit Feedback
         </Button>
       </form>
     </Form>
-  );
+  )
 }
 
 export default function FeedbackForm({ form }: { form: FormSchema }) {
   return (
-    <Card className="w-full mx-0 sm:mx-auto border-0 sm:border shadow-none sm:shadow-md rounded-none sm:rounded-lg">
-      <CardHeader className="px-4 sm:px-6 pb-4 sm:pb-6">
+    <Card className="mx-0 w-full rounded-none border-0 shadow-none sm:mx-auto sm:rounded-lg sm:border sm:shadow-md">
+      <CardHeader className="px-4 pb-4 sm:px-6 sm:pb-6">
         <CardTitle className="text-2xl">{form.title}</CardTitle>
         {form.event_name && (
-          <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
+          <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
             <Calendar className="h-4 w-4" />
             <span>{form.event_name}</span>
             {form.event_date && (
@@ -704,20 +641,20 @@ export default function FeedbackForm({ form }: { form: FormSchema }) {
           </div>
         )}
         {form.description && (
-          <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <p className="text-gray-700 leading-relaxed">{form.description}</p>
+          <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <p className="leading-relaxed text-gray-700">{form.description}</p>
           </div>
         )}
       </CardHeader>
       <CardContent className="px-4 sm:px-6">
-        {form.type === "talk" ? (
+        {form.type === 'talk' ? (
           <TalkForm formId={form.id} formType={form.type} />
-        ) : form.type === "workshop" ? (
+        ) : form.type === 'workshop' ? (
           <WorkshopForm formId={form.id} formType={form.type} />
         ) : (
           <PanelForm formId={form.id} formType={form.type} />
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

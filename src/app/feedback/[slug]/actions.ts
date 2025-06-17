@@ -1,11 +1,7 @@
-"use server";
+'use server'
 
-import getDb from "@/lib/db";
-import {
-  panelFeedbackSchema,
-  talkFeedbackSchema,
-  workshopFeedbackSchema,
-} from "@/lib/zod-schemas";
+import getDb from '@/lib/db'
+import { panelFeedbackSchema, talkFeedbackSchema, workshopFeedbackSchema } from '@/lib/zod-schemas'
 
 export async function submitFeedbackAction(
   _prev: { success?: true; error: undefined | string },
@@ -13,39 +9,39 @@ export async function submitFeedbackAction(
 ): Promise<{ success?: true; error: undefined | string }> {
   // We build a FormData object containing all possible fields for all feedback form types before validation
   const expandedFormData = {
-    formId: parseInt(formData.get("formId") as string, 10),
-    formType: formData.get("formType"),
-    topic: formData.get("topic"),
-    expertise: formData.get("expertise"),
-    mayPublish: formData.get("mayPublish") === "on",
+    formId: parseInt(formData.get('formId') as string, 10),
+    formType: formData.get('formType'),
+    topic: formData.get('topic'),
+    expertise: formData.get('expertise'),
+    mayPublish: formData.get('mayPublish') === 'on',
     // everything below is optional or has defaults, so we can default back to undefined for Zod's sake
-    username: formData.get("username") || undefined,
-    email: formData.get("email") || undefined,
-    comment: formData.get("comment") || undefined,
-    presentation: formData.get("presentation") || undefined,
-    slides: formData.get("slides") || undefined,
-    materials: formData.get("materials") || undefined,
-    interaction: formData.get("interaction") || undefined,
-    discussion: formData.get("discussion") || undefined,
-    panelists: formData.get("panelists") || undefined,
-  };
+    username: formData.get('username') || undefined,
+    email: formData.get('email') || undefined,
+    comment: formData.get('comment') || undefined,
+    presentation: formData.get('presentation') || undefined,
+    slides: formData.get('slides') || undefined,
+    materials: formData.get('materials') || undefined,
+    interaction: formData.get('interaction') || undefined,
+    discussion: formData.get('discussion') || undefined,
+    panelists: formData.get('panelists') || undefined,
+  }
 
   const formSchema =
-    expandedFormData.formType === "talk"
+    expandedFormData.formType === 'talk'
       ? talkFeedbackSchema
-      : expandedFormData.formType === "workshop"
-      ? workshopFeedbackSchema
-      : panelFeedbackSchema;
+      : expandedFormData.formType === 'workshop'
+        ? workshopFeedbackSchema
+        : panelFeedbackSchema
 
-  const validatedFormData = formSchema.safeParse(expandedFormData);
+  const validatedFormData = formSchema.safeParse(expandedFormData)
 
   if (!validatedFormData.success) {
     return {
       error: validatedFormData.error.message,
-    };
+    }
   }
 
-  const db = await getDb();
+  const db = await getDb()
 
   const {
     formId,
@@ -56,33 +52,20 @@ export async function submitFeedbackAction(
     expertise,
     mayPublish,
     // The following fields may not exist on all types, so we use type narrowing below
-  } = validatedFormData.data;
+  } = validatedFormData.data
 
   // Type narrowing for optional fields
   const presentation =
-    "presentation" in validatedFormData.data
-      ? validatedFormData.data.presentation
-      : undefined;
-  const slides =
-    "slides" in validatedFormData.data
-      ? validatedFormData.data.slides
-      : undefined;
+    'presentation' in validatedFormData.data ? validatedFormData.data.presentation : undefined
+  const slides = 'slides' in validatedFormData.data ? validatedFormData.data.slides : undefined
   const materials =
-    "materials" in validatedFormData.data
-      ? validatedFormData.data.materials
-      : undefined;
+    'materials' in validatedFormData.data ? validatedFormData.data.materials : undefined
   const interaction =
-    "interaction" in validatedFormData.data
-      ? validatedFormData.data.interaction
-      : undefined;
+    'interaction' in validatedFormData.data ? validatedFormData.data.interaction : undefined
   const discussion =
-    "discussion" in validatedFormData.data
-      ? validatedFormData.data.discussion
-      : undefined;
+    'discussion' in validatedFormData.data ? validatedFormData.data.discussion : undefined
   const panelists =
-    "panelists" in validatedFormData.data
-      ? validatedFormData.data.panelists
-      : undefined;
+    'panelists' in validatedFormData.data ? validatedFormData.data.panelists : undefined
 
   const [row] = await db`
     INSERT INTO form_submissions
@@ -103,9 +86,9 @@ export async function submitFeedbackAction(
       ${mayPublish}
     )
     RETURNING *
-  `;
+  `
 
-  if (!row) return { error: "Could not create feedback. Please try again!" };
+  if (!row) return { error: 'Could not create feedback. Please try again!' }
 
-  return { success: true, error: undefined };
+  return { success: true, error: undefined }
 }

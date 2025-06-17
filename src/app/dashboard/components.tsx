@@ -1,16 +1,13 @@
-"use client";
+'use client'
 
-import { useActionState, useEffect, useRef, useState } from "react";
 import {
   createEventAction,
   createFormAction,
   logoutAction,
   toggleFormActive,
-} from "@/app/dashboard/actions";
-import { eventSchema, formSchema } from "@/lib/zod-schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import type z from "zod";
+} from '@/app/dashboard/actions'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -19,8 +16,35 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import type { Event, Form as FormType } from '@/lib/types/database.types'
+import { eventSchema, formSchema } from '@/lib/zod-schemas'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   AlertCircle,
   Copy,
@@ -30,69 +54,46 @@ import {
   MoreHorizontal,
   PlusCircle,
   QrCode,
-} from "lucide-react";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import type { Event, Form as FormType } from "@/lib/types/database.types";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { QRCodeSVG } from "qrcode.react";
-import { Switch } from "@/components/ui/switch";
-import Link from "next/link";
+} from 'lucide-react'
+import { default as NextImage } from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { QRCodeSVG } from 'qrcode.react'
+import { useActionState, useEffect, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import type z from 'zod'
 
 interface CreateFormDialogProps {
-  events: Event[];
+  events: Event[]
 }
 
 export function CreateEventDialog() {
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      title: "",
+      title: '',
       description: undefined,
       date: undefined,
       location: undefined,
     },
-  });
+  })
 
   const [state, formAction, isPending] = useActionState(createEventAction, {
     error: undefined,
     event: undefined,
-  });
+  })
 
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     if (state.event) {
-      setOpen(false);
-      toast.success("Event created successfully!");
-      router.refresh();
+      setOpen(false)
+      toast.success('Event created successfully!')
+      router.refresh()
     }
-  }, [router, setOpen, state.event]);
+  }, [router, setOpen, state.event])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -105,9 +106,7 @@ export function CreateEventDialog() {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Event</DialogTitle>
-          <DialogDescription>
-            Create a new event to link feedback forms to.
-          </DialogDescription>
+          <DialogDescription>Create a new event to link feedback forms to.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form action={formAction}>
@@ -126,12 +125,7 @@ export function CreateEventDialog() {
                   <FormItem>
                     <FormLabel>Title *</FormLabel>
                     <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="e.g., DockerCon 2025"
-                        {...field}
-                        required
-                      />
+                      <Input type="text" placeholder="e.g., DockerCon 2025" {...field} required />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -167,11 +161,7 @@ export function CreateEventDialog() {
                         type="date"
                         placeholder="YYYY-MM-DD"
                         {...field}
-                        value={
-                          field.value
-                            ? new Date(field.value).toISOString().split("T")[0]
-                            : ""
-                        }
+                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
                       />
                     </FormControl>
                     <FormMessage />
@@ -199,54 +189,47 @@ export function CreateEventDialog() {
               />
             </div>
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpen(false)}
-              >
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                disabled={isPending || !form.formState.isValid}
-              >
-                {isPending ? "Creating..." : "Create Event"}
+              <Button type="submit" disabled={isPending || !form.formState.isValid}>
+                {isPending ? 'Creating...' : 'Create Event'}
               </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
 export function CreateFormDialog({ events }: CreateFormDialogProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      title: '',
       description: undefined,
-      type: "talk",
-      eventId: "",
-      slug: "",
+      type: 'talk',
+      eventId: '',
+      slug: '',
     },
-  });
+  })
 
   const [state, formAction, isPending] = useActionState(createFormAction, {
     error: undefined,
     form: undefined,
-  });
+  })
 
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     if (state.form) {
-      setOpen(false);
-      toast.success("Form created successfully!");
-      router.refresh();
+      setOpen(false)
+      toast.success('Form created successfully!')
+      router.refresh()
     }
-  }, [router, setOpen, state.form]);
+  }, [router, setOpen, state.form])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -259,9 +242,7 @@ export function CreateFormDialog({ events }: CreateFormDialogProps) {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create Feedback Form</DialogTitle>
-          <DialogDescription>
-            Create a new feedback form for talks or workshops.
-          </DialogDescription>
+          <DialogDescription>Create a new feedback form for talks or workshops.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form action={formAction}>
@@ -326,7 +307,7 @@ export function CreateFormDialog({ events }: CreateFormDialogProps) {
                     <FormControl>
                       <Select
                         defaultValue={field.value}
-                        onValueChange={(value: "talk" | "workshop" | "panel") =>
+                        onValueChange={(value: 'talk' | 'workshop' | 'panel') =>
                           field.onChange(value)
                         }
                       >
@@ -362,10 +343,7 @@ export function CreateFormDialog({ events }: CreateFormDialogProps) {
                         </SelectTrigger>
                         <SelectContent>
                           {events.map((event) => (
-                            <SelectItem
-                              key={event.id}
-                              value={event.id.toString()}
-                            >
+                            <SelectItem key={event.id} value={event.id.toString()}>
                               {event.name}
                             </SelectItem>
                           ))}
@@ -373,8 +351,7 @@ export function CreateFormDialog({ events }: CreateFormDialogProps) {
                       </Select>
                     </FormControl>
                     <FormDescription>
-                      <b>Optional.</b> Link this form to an event for more
-                      context.
+                      <b>Optional.</b> Link this form to an event for more context.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -387,15 +364,11 @@ export function CreateFormDialog({ events }: CreateFormDialogProps) {
                   <FormItem>
                     <FormLabel>Form Code</FormLabel>
                     <FormControl>
-                      <Input
-                        className="w-48"
-                        {...field}
-                        placeholder="e.g., ABCD1234"
-                      />
+                      <Input className="w-48" {...field} placeholder="e.g., ABCD1234" />
                     </FormControl>
                     <FormDescription>
-                      <b>Optional.</b> Provide an easy-to-remember, 8-character
-                      code. If left blank, a random code will be generated.
+                      <b>Optional.</b> Provide an easy-to-remember, 8-character code. If left blank,
+                      a random code will be generated.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -403,43 +376,36 @@ export function CreateFormDialog({ events }: CreateFormDialogProps) {
               />
             </div>
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpen(false)}
-              >
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button
-                type="submit"
-                disabled={isPending || !form.formState.isValid}
-              >
-                {isPending ? "Creating..." : "Create Form"}
+              <Button type="submit" disabled={isPending || !form.formState.isValid}>
+                {isPending ? 'Creating...' : 'Create Form'}
               </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
 export function FormActions({ form }: { form: FormType }) {
-  const [showShareDialog, setShowShareDialog] = useState(false);
-  const [formUrl, setFormUrl] = useState("");
+  const [showShareDialog, setShowShareDialog] = useState(false)
+  const [formUrl, setFormUrl] = useState('')
 
   useEffect(() => {
-    setFormUrl(`${window.location.origin}/feedback/${form.slug}`);
-  }, [form.slug]);
+    setFormUrl(`${window.location.origin}/feedback/${form.slug}`)
+  }, [form.slug])
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(formUrl);
-    toast.success("Form link copied to clipboard");
-  };
+    navigator.clipboard.writeText(formUrl)
+    toast.success('Form link copied to clipboard')
+  }
 
   const openForm = () => {
-    window.open(formUrl, "_blank");
-  };
+    window.open(formUrl, '_blank')
+  }
 
   return (
     <>
@@ -457,9 +423,7 @@ export function FormActions({ form }: { form: FormType }) {
             <DropdownMenuItem asChild>
               <Link href={`/forms/${form.slug}`}>View Details</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setShowShareDialog(true)}>
-              Share Form
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setShowShareDialog(true)}>Share Form</DropdownMenuItem>
             <DropdownMenuItem onClick={openForm}>View Form</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -473,20 +437,16 @@ export function FormActions({ form }: { form: FormType }) {
               Share this link with your audience to collect feedback.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex items-center space-x-2 mt-4">
+          <div className="mt-4 flex items-center space-x-2">
             <div className="grid flex-1 gap-2">
-              <Input
-                readOnly
-                value={formUrl}
-                onClick={(e) => e.currentTarget.select()}
-              />
+              <Input readOnly value={formUrl} onClick={(e) => e.currentTarget.select()} />
             </div>
             <Button type="button" size="icon" onClick={copyToClipboard}>
               <Copy className="h-4 w-4" />
               <span className="sr-only">Copy</span>
             </Button>
           </div>
-          <div className="flex justify-between mt-4">
+          <div className="mt-4 flex justify-between">
             <Button variant="outline" onClick={() => setShowShareDialog(false)}>
               Close
             </Button>
@@ -498,40 +458,30 @@ export function FormActions({ form }: { form: FormType }) {
         </DialogContent>
       </Dialog>
     </>
-  );
+  )
 }
 
-export function FormSwitch({
-  formId,
-  isActive,
-}: {
-  formId: number;
-  isActive: boolean;
-}) {
-  const [toggleSuccess, setToggleSuccess] = useState<undefined | boolean>(
-    undefined
-  );
-  const router = useRouter();
+export function FormSwitch({ formId, isActive }: { formId: number; isActive: boolean }) {
+  const [toggleSuccess, setToggleSuccess] = useState<undefined | boolean>(undefined)
+  const router = useRouter()
 
   useEffect(() => {
     if (toggleSuccess) {
-      toast.success("Form activated successfully!");
+      toast.success('Form activated successfully!')
     } else if (toggleSuccess === false) {
-      toast.success("Form deactivated successfully!");
+      toast.success('Form deactivated successfully!')
     }
-  }, [toggleSuccess]);
+  }, [toggleSuccess])
 
   async function handleToggleActive(formId: number, checked: boolean) {
-    setToggleSuccess(checked);
-    const { error } = await toggleFormActive(formId, checked);
+    setToggleSuccess(checked)
+    const { error } = await toggleFormActive(formId, checked)
     if (error) {
-      toast.error(
-        `Failed to ${checked ? "activate" : "deactivate"} form: ${error}`
-      );
-      setToggleSuccess(!checked);
-      return;
+      toast.error(`Failed to ${checked ? 'activate' : 'deactivate'} form: ${error}`)
+      setToggleSuccess(!checked)
+      return
     }
-    router.refresh();
+    router.refresh()
   }
 
   return (
@@ -540,18 +490,18 @@ export function FormSwitch({
       onCheckedChange={(checked) => handleToggleActive(formId, checked)}
       className="cursor-pointer"
     />
-  );
+  )
 }
 
 export function Header() {
-  const [_, formAction, isPending] = useActionState(logoutAction, undefined);
+  const [_state, formAction, isPending] = useActionState(logoutAction, undefined)
 
   return (
     <div className="border-b bg-white">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-2">
-            <img src="/favicon.ico" alt="Logo" className="w-16 h-16" />
+          <div className="space-2 flex items-center">
+            <NextImage src="/favicon.ico" alt="Logo" height={64} width={64} />
             <h1 className="text-xl font-semibold">Yay or Nay</h1>
           </div>
           <form action={formAction}>
@@ -562,58 +512,56 @@ export function Header() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export function QRCodeDialog({ url, title }: { url: string; title: string }) {
-  const [open, setOpen] = useState(false);
-  const qrRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false)
+  const qrRef = useRef<HTMLDivElement>(null)
 
   const downloadQRCode = () => {
-    if (!qrRef.current) return;
+    if (!qrRef.current) return
 
     // Create a canvas element
-    const canvas = document.createElement("canvas");
-    const svgElement = qrRef.current.querySelector("svg");
+    const canvas = document.createElement('canvas')
+    const svgElement = qrRef.current.querySelector('svg')
 
-    if (!svgElement) return;
+    if (!svgElement) return
 
-    const svgData = new XMLSerializer().serializeToString(svgElement);
-    const img = new Image();
+    const svgData = new XMLSerializer().serializeToString(svgElement)
+    const img = new Image()
 
     img.onload = () => {
       // Set canvas dimensions to match the QR code with some padding
-      canvas.width = img.width + 40;
-      canvas.height = img.height + 40;
+      canvas.width = img.width + 40
+      canvas.height = img.height + 40
 
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
 
       // Fill with white background
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       // Draw the QR code in the center
-      ctx.drawImage(img, 20, 20);
+      ctx.drawImage(img, 20, 20)
 
       // Create download link
-      const link = document.createElement("a");
-      link.download = `feedback-form-qr-${title
-        .replace(/\s+/g, "-")
-        .toLowerCase()}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+      const link = document.createElement('a')
+      link.download = `feedback-form-qr-${title.replace(/\s+/g, '-').toLowerCase()}.png`
+      link.href = canvas.toDataURL('image/png')
+      link.click()
 
-      toast.success("The QR code has been downloaded as PNG image.");
-    };
+      toast.success('The QR code has been downloaded as PNG image.')
+    }
 
-    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
-  };
+    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`
+  }
 
   const copyQRCodeUrl = () => {
-    navigator.clipboard.writeText(url);
-    toast.success("The feedback form URL has been copied to clipboard.");
-  };
+    navigator.clipboard.writeText(url)
+    toast.success('The feedback form URL has been copied to clipboard.')
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -627,19 +575,16 @@ export function QRCodeDialog({ url, title }: { url: string; title: string }) {
         <DialogHeader>
           <DialogTitle>Feedback Form QR Code</DialogTitle>
           <DialogDescription>
-            Share this QR code with your audience to collect feedback for "
-            {title}".
+            Share this QR code with your audience to collect feedback for &quot;{title}&quot;.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col items-center justify-center p-4 bg-white rounded-md">
-          <div ref={qrRef} className="border p-4 rounded-md bg-white">
+        <div className="flex flex-col items-center justify-center rounded-md bg-white p-4">
+          <div ref={qrRef} className="rounded-md border bg-white p-4">
             <QRCodeSVG value={url} size={200} level="H" />
           </div>
-          <p className="mt-4 text-xs text-center text-gray-500 max-w-[200px] truncate">
-            {url}
-          </p>
+          <p className="mt-4 max-w-[200px] truncate text-center text-xs text-gray-500">{url}</p>
         </div>
-        <DialogFooter className="flex flex-col sm:flex-row sm:justify-between gap-2">
+        <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-between">
           <Button variant="outline" onClick={copyQRCodeUrl}>
             <Copy className="mr-2 h-4 w-4" />
             Copy URL
@@ -651,5 +596,5 @@ export function QRCodeDialog({ url, title }: { url: string; title: string }) {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

@@ -13,6 +13,14 @@ export default [
     ],
     plugins: ['prettier'],
     rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
       'prettier/prettier': ['error'],
       'arrow-body-style': 'off',
       'prefer-arrow-callback': 'off',

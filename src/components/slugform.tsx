@@ -1,23 +1,23 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import Link from 'next/link'
+import { useState } from 'react'
 
 export default function SlugForm() {
-  const [slug, setSlug] = useState("");
-  const [formattedSlug, setFormattedSlug] = useState("");
+  const [slug, setSlug] = useState('')
+  const [formattedSlug, setFormattedSlug] = useState('')
 
   function updateSlugInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const input = e.target.value.replace("-", "").toUpperCase();
-    setSlug(input);
+    const input = e.target.value.replace('-', '').toUpperCase()
+    setSlug(input)
     // Format the slug to lowercase and replace spaces with hyphens
     const formatted = (
-      input.length > 4 ? input.slice(0, 4) + "-" + input.slice(4) : input
-    ).toUpperCase();
-    setFormattedSlug(formatted);
+      input.length > 4 ? input.slice(0, 4) + '-' + input.slice(4) : input
+    ).toUpperCase()
+    setFormattedSlug(formatted)
   }
 
   return (
@@ -33,7 +33,7 @@ export default function SlugForm() {
           maxLength={9} // 8 characters + 1 dash
           className="text-center font-mono text-lg tracking-wider"
         />
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-center text-xs text-gray-500">
           Enter the 8-character code provided by the presenter
         </p>
       </div>
@@ -42,5 +42,5 @@ export default function SlugForm() {
         <Link href={`/feedback/${slug}`}>Access Feedback Form</Link>
       </Button>
     </>
-  );
+  )
 }

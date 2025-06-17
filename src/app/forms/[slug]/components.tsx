@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
-import { toast } from "sonner";
+import { Button } from '@/components/ui/button'
+import { Copy } from 'lucide-react'
+import { toast } from 'sonner'
 
 export function CopyFormURLButton({ url }: { url: string }) {
   function copyFormUrl() {
     navigator.clipboard.writeText(url).then(() => {
-      toast.success("Form link copied to clipboard successfully.");
-    });
+      toast.success('Form link copied to clipboard successfully.')
+    })
   }
 
   return (
@@ -16,5 +16,5 @@ export function CopyFormURLButton({ url }: { url: string }) {
       <Copy className="mr-2 h-4 w-4" />
       Copy Link
     </Button>
-  );
+  )
 }
