@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-2 py-4 sm:px-4 sm:py-8">
+    <div className="min-h-screen bg-gray-50 sm:px-4 sm:py-8">
       <div className="container mx-auto max-w-3xl px-0 sm:px-4">
         <FeedbackForm form={form} />
       </div>

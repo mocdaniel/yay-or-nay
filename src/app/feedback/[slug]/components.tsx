@@ -134,7 +134,7 @@ function PanelForm({
                       onValueChange={field.onChange}
                       defaultValue={undefined}
                       name={field.name}
-                      className="flex space-x-2"
+                      className="flex space-x-1 sm:space-x-2"
                     >
                       {[1, 2, 3, 4, 5].map((rating) => {
                         return (
@@ -316,7 +316,7 @@ function TalkForm({
                       onValueChange={field.onChange}
                       defaultValue={undefined}
                       name={field.name}
-                      className="flex space-x-2"
+                      className="flex space-x-1 sm:space-x-2"
                     >
                       {[1, 2, 3, 4, 5].map((rating) => {
                         return (
@@ -498,7 +498,7 @@ function WorkshopForm({
                       onValueChange={field.onChange}
                       value={field.value}
                       name={field.name}
-                      className="flex space-x-2"
+                      className="flex space-x-1 sm:space-x-2"
                     >
                       {[1, 2, 3, 4, 5].map((rating) => {
                         return (
