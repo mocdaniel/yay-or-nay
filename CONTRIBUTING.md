@@ -7,7 +7,7 @@ This project is an open-source, self-hostable tool designed to collect structure
 We welcome contributions of all kinds — whether it's fixing bugs, proposing features, improving documentation, or helping with project management.
 
 > [!NOTE]
-> Make sure to read the [What Yay or Nay Is and What it Isn't](https://mocdaniel.github.io/yay-or-nay/what-is-yay-or-nay) page of the docs before contributing.
+> Make sure to read the [What Yay or Nay Is and What it Isn't](https://docs.yay-or-nay.com/what-is-yay-or-nay) page of the docs before contributing.
 >
 > This is an opinionated project, and not all improvements and/or feature requests will get approved. If in doubt,
 > feel free to [open an issue](https://github.com/mocdaniel/yay-or-nay/issues/new).

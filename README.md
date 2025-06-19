@@ -9,7 +9,7 @@ It allows you to gather intel from attendees of your gigs, including
 - **Panel Sessions**
 
 You can find more information on Yay Or Nay, it's use-cases, and constraints,
-[in the docs](https://mocdaniel.github.io/yay-or-nay).
+[in the docs](https://docs.yay-or-nay.com).
 
 Below are a few screenshots of the tool. There's also a [public demo](./README.md#public-demo) available.
 
@@ -40,14 +40,14 @@ You can deploy Yay or Nay on **Docker**, using the official Docker images at `gh
 In the future, there will be support for different deployment strategies, e.g. **Kubernetes**, as well as for
 multiple **SaaS offerings** (Vercel, Netlify, etc.).
 
-More information on how to deploy Yay or Nay can be found [in the docs](https://mocdaniel.github.io/yay-or-nay/getting-started/docker).
+More information on how to deploy Yay or Nay can be found [in the docs](https://docs.yay-or-nay.com/getting-started/docker).
 
 ## Contributing
 
 Feel free to contribute to this repository. More detailed information can be found in [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 > [!NOTE]
-> Make sure to read the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file, as well as the [What Yay or Nay Is and What it Isn't](https://mocdaniel.github.io/yay-or-nay/what-is-yay-or-nay) page of the docs.
+> Make sure to read the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file, as well as the [What Yay or Nay Is and What it Isn't](https://docs.yay-or-nay.com/what-is-yay-or-nay) page of the docs.
 >
 > This is an opinionated project, and not all improvements and/or feature requests will get approved. If in doubt,
 > feel free to [open an issue](https://github.com/mocdaniel/yay-or-nay/issues/new).
