@@ -29,7 +29,7 @@ nav:
       - Talks: feedback-forms/talks.md
       - Workshops: feedback-forms/workshops.md
   - Administration:
-      - Reset your password: administration/reset-password.md
+      - Resetting your password: administration/reset-password.md
 plugins:
   - search
   - social:
