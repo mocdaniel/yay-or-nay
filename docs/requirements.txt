@@ -33,6 +33,6 @@ pyyaml_env_tag==1.1
 requests==2.32.4
 six==1.17.0
 tinycss2==1.4.0
-urllib3==2.4.0
+urllib3==2.5.0
 watchdog==6.0.0
 webencodings==0.5.1
