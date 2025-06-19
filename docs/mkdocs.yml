@@ -1,0 +1,74 @@
+site_name: Yay or Nay
+site_url: https://mocdaniel.github.io/yay-or-nay
+copyright: >
+  Copyright © 2025 Yay or Nay
+extra:
+  social:
+    - icon: "simple/github"
+      link: https://github.com/mocdaniel/yay-or-nay
+      name: GitHub
+extra_css:
+  - stylesheets/extra.css
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences
+nav:
+  - Home:
+      - index.md
+      - What Yay Or Nay Is (and Isn't): what-yay-or-nay-is.md
+      - Features: features.md
+  - Getting Started:
+      - Deploying on Docker: getting-started/docker.md
+  - Feedback Forms:
+      - Panels: feedback-forms/panels.md
+      - Talks: feedback-forms/talks.md
+      - Workshops: feedback-forms/workshops.md
+  - Administration:
+      - Reset your password: administration/reset-password.md
+plugins:
+  - search
+  - social:
+repo_url: https://github.com/mocdaniel/yay-or-nay
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - content.code.annotate
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - navigation.footer
+
