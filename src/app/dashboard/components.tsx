@@ -55,7 +55,6 @@ import {
   PlusCircle,
   QrCode,
 } from 'lucide-react'
-import { default as NextImage } from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { QRCodeSVG } from 'qrcode.react'
@@ -493,25 +492,15 @@ export function FormSwitch({ formId, isActive }: { formId: number; isActive: boo
   )
 }
 
-export function Header() {
+export function LogoutForm() {
   const [_state, formAction, isPending] = useActionState(logoutAction, undefined)
 
   return (
-    <div className="border-b bg-white">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="space-2 flex items-center">
-            <NextImage src="/favicon.ico" alt="Logo" height={64} width={64} />
-            <h1 className="text-xl font-semibold">Yay or Nay</h1>
-          </div>
-          <form action={formAction}>
-            <Button variant="outline" type="submit" disabled={isPending}>
-              <LogOut /> Logout
-            </Button>
-          </form>
-        </div>
-      </div>
-    </div>
+    <form action={formAction}>
+      <Button variant="outline" type="submit" disabled={isPending}>
+        <LogOut /> Logout
+      </Button>
+    </form>
   )
 }
 

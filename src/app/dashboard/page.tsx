@@ -3,8 +3,8 @@ import {
   CreateFormDialog,
   FormActions,
   FormSwitch,
-  Header,
 } from '@/app/dashboard/components'
+import { Header } from '@/components/header'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import getDb from '@/lib/db'
