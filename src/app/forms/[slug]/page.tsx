@@ -1,5 +1,6 @@
-import { Header, QRCodeDialog } from '@/app/dashboard/components'
+import { QRCodeDialog } from '@/app/dashboard/components'
 import { CopyFormURLButton } from '@/app/forms/[slug]/components'
+import { Header } from '@/components/header'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
