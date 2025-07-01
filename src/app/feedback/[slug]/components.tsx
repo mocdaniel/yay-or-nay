@@ -553,6 +553,9 @@ function WorkshopForm({
                     rows={4}
                   />
                 </FormControl>
+                <FormDescription className="justify-self-end">
+                  {500 - (field.value ?? '').length}/500 characters remaining
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

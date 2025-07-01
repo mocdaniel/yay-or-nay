@@ -49,7 +49,7 @@ const feedbackFormPartial = {
   expertise: z.string().regex(/^[1-5]$/, 'Rating must be between 1 and 5'),
   username: z.string().min(2).max(128).optional().or(z.string().length(0)),
   email: z.string().email().optional().or(z.string().length(0)),
-  comment: z.string().min(4).max(1028).optional().or(z.string().length(0)),
+  comment: z.string().min(4).max(500).optional().or(z.string().length(0)),
   mayPublish: z.boolean(),
 }
 
