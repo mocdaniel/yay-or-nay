@@ -12,6 +12,7 @@ import { getCurrentSession } from '@/lib/session'
 import type { Event, Form } from '@/lib/types/database.types'
 import { formatSlug } from '@/lib/utils'
 import { Calendar, MessageSquare } from 'lucide-react'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export default async function AdminDashboard() {
@@ -80,11 +81,13 @@ export default async function AdminDashboard() {
                 </Card>
               ) : (
                 forms.map((form) => (
-                  <Card key={form.id} className="cursor-pointer">
+                  <Card key={form.id}>
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <CardTitle className="text-lg">{form.title}</CardTitle>
+                          <CardTitle className="text-lg hover:cursor-pointer hover:underline">
+                            <Link href={`/forms/${form.slug}`}>{form.title}</Link>
+                          </CardTitle>
                           <div className="font-mono text-sm text-gray-500">
                             Code: {formatSlug(form.slug)}
                           </div>
