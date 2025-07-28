@@ -1,4 +1,4 @@
-import { SQL, sql } from 'bun'
+import { SQL } from 'bun'
 
 declare global {
   var __db: SQL | undefined
@@ -14,7 +14,10 @@ export default async function getDb(): Promise<SQL> {
 
   try {
     console.log('Connecting to the database...')
-    await sql.connect()
+    const sql = new SQL({
+      url: process.env.POSTGRES_URL,
+      maxLifetime: 10800, // 3 hours
+    })
     console.log('Connected to the database successfully')
 
     console.log('Applying migrations...')
