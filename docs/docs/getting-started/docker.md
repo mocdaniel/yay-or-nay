@@ -33,7 +33,7 @@ services:
     environment:
       POSTGRES_URL: postgres://postgres:postgres@postgres:5432/yay_or_nay # (3)!
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
+      test: ["CMD-SHELL", "wget -q http://${HOSTNAME}:3000/ || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5

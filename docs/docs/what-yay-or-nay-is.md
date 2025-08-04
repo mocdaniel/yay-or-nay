@@ -31,7 +31,7 @@ While there are certain features [on the roadmap](https://github.com/mocdaniel/y
 
 **Bugs, regressions, and QoL improvements** will of course always be welcome, and creating a friendly fork to make Yay Or Nay fit your use-case is encouraged.
 
-## Yay Or Nay Is Not...x
+## Yay Or Nay Is Not...
 
 ### ...a form builder
 
