@@ -1,3 +1,17 @@
+## [1.1.1] - 2025-08-04
+
+### 🚀 Features
+
+- Add explicit health checks to compose.yaml
+
+### 🐛 Bug Fixes
+
+- Adjust HEALTHCHECK in Docker image
+
+### 📚 Documentation
+
+- Adjust copy-paste compose.yaml with updated healthcheck
+
 ## [1.1.0] - 2025-08-04
 
 ### 🚀 Features
@@ -21,6 +35,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Initialize git-cliff
+- Prepare for release 1.1.0
 
 ## [1.0.0] - 2025-06-19
 
