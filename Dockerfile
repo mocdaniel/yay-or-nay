@@ -24,6 +24,6 @@ COPY --from=builder /app/.next/standalone .
 COPY --from=builder /app/.next/static ./.next/static
 COPY migrations.sql package.json bun.lock ./
 
-HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD wget -q http://${HOSTNAME}:3000/ || exit 1
+HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD wget -qO- http://${HOSTNAME}:3000/ || exit 1
 
 CMD ["bun", "server.js"]
